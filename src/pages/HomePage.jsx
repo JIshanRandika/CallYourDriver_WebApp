@@ -58,7 +58,7 @@ function HomePage() {
   }
 
   return (
-    <div>
+    <div style={styles.pageContainer}>
       <Header />
       <div style={styles.container}>
         <h1 style={styles.title}>Select Park</h1>
@@ -104,6 +104,14 @@ function HomePage() {
 }
 
 const styles = {
+  pageContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    overflow: 'hidden',
+    backgroundColor: '#1E1E2C',
+    color: '#FFFFFF',
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',
