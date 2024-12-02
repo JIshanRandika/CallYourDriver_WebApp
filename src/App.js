@@ -31,18 +31,13 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
 import DriverDetailsPage from './pages/DriverDetailsPage';
 
-// Function to check if the user is logged in
-const isAuthenticated = () => {
-  return !!localStorage.getItem('token'); // Check if token exists
-};
-
 function App() {
   return (
     <Router>
       <Routes>
       <Route
           path="/"
-          element={isAuthenticated() ? <Navigate to="/home" replace /> : <LoginPage />}
+          element={localStorage.getItem('token') ? <Navigate to="/home" replace /> : <LoginPage />}
         />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
