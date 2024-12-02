@@ -3,12 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import { getParks, getCategories } from '../services/api';
 import Header from '../components/Header';
 
+function Popup({ message, onClose }) {
+  return (
+    <div style={popupStyles.overlay}>
+      <div style={popupStyles.popup}>
+        <p style={popupStyles.message}>{message}</p>
+        <button style={popupStyles.closeButton} onClick={onClose}>
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function HomePage() {
   const [parkName, setParkName] = useState('');
   const [parks, setParks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [popupMessage, setPopupMessage] = useState(null); // For managing the popup message
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +33,7 @@ function HomePage() {
         setCategories(categoryData.data);
       } catch (error) {
         console.error('Error fetching data:', error);
-        alert('Failed to load parks and categories. Please try again.');
+        setPopupMessage('Failed to load parks and categories. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -30,7 +43,7 @@ function HomePage() {
 
   const handleCategorySelection = (category) => {
     if (!parkName) {
-      alert('Please select a park before choosing a category.');
+      setPopupMessage('Please select a park before choosing a category.');
     } else {
       navigate('/driver-details', { state: { parkName, category } });
     }
@@ -46,41 +59,47 @@ function HomePage() {
 
   return (
     <div>
-        <Header />
-        <div style={styles.container}>
-      <h1 style={styles.title}>Select Park</h1>
-      <select
-        value={parkName}
-        onChange={(e) => setParkName(e.target.value)}
-        style={styles.dropdown}
-      >
-        <option value="">Select a park</option>
-        {parks.map((park) => (
-          <option key={park} value={park}>
-            {park}
-          </option>
-        ))}
-      </select>
+      <Header />
+      <div style={styles.container}>
+        <h1 style={styles.title}>Select Park</h1>
+        <select
+          value={parkName}
+          onChange={(e) => setParkName(e.target.value)}
+          style={styles.dropdown}
+        >
+          <option value="">Select a park</option>
+          {parks.map((park) => (
+            <option key={park} value={park}>
+              {park}
+            </option>
+          ))}
+        </select>
 
-      <h2 style={styles.title}>Select Category</h2>
-      <div style={styles.categoriesContainer}>
-        {categories.map((category) => (
-          <button
-            key={category.name}
-            style={{
-              ...styles.categoryButton,
-              ...(category.isDisabled ? styles.disabledButton : {}),
-            }}
-            onClick={() => handleCategorySelection(category.name)}
-            disabled={category.isDisabled}
-          >
-            {category.name}
-          </button>
-        ))}
+        <h2 style={styles.title}>Select Category</h2>
+        <div style={styles.categoriesContainer}>
+          {categories.map((category) => (
+            <button
+              key={category.name}
+              style={{
+                ...styles.categoryButton,
+                ...(category.isDisabled ? styles.disabledButton : {}),
+              }}
+              onClick={() => handleCategorySelection(category.name)}
+              disabled={category.isDisabled}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {popupMessage && (
+        <Popup
+          message={popupMessage}
+          onClose={() => setPopupMessage(null)} // Close the popup
+        />
+      )}
     </div>
-    </div>
-    
   );
 }
 
@@ -141,6 +160,43 @@ const styles = {
   loadingText: {
     fontSize: '1.5rem',
     color: '#B0B3B8',
+  },
+};
+
+const popupStyles = {
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  popup: {
+    backgroundColor: '#2C2C3A',
+    padding: '20px',
+    borderRadius: '10px',
+    textAlign: 'center',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
+  },
+  message: {
+    color: '#FFFFFF',
+    fontSize: '1rem',
+    marginBottom: '20px',
+  },
+  closeButton: {
+    padding: '10px 20px',
+    backgroundColor: '#4F63AC',
+    color: '#FFFFFF',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    fontWeight: 'bold',
   },
 };
 
