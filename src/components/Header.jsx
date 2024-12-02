@@ -17,11 +17,19 @@ function Header() {
     window.open(url, '_blank');
   };
 
+  const downloadApp = () => {
+    const appUrl = 'https://download-callyourdriver.web.app/'; // Replace with your app download link
+    window.open(appUrl, '_blank');
+  };
+
   return (
     <header style={styles.header}>
       <button onClick={openWhatsApp} style={styles.supportButton}>
         <FaQuestion size={24} color="#25D366" />
       </button>
+      {/* <button onClick={downloadApp} style={styles.downloadButton}>
+        Download App
+      </button> */}
       <button onClick={handleLogout} style={styles.logoutButton}>
         Logout
       </button>
@@ -33,6 +41,7 @@ const styles = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: '10px 20px',
     backgroundColor: '#1E1E2C',
     color: '#FFF',
@@ -41,6 +50,15 @@ const styles = {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
+  },
+  downloadButton: {
+    backgroundColor: 'green',
+    color: '#FFF',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    margin: '0 auto',
   },
   logoutButton: {
     backgroundColor: '#4F63AC',

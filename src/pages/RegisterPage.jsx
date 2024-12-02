@@ -24,7 +24,7 @@ function RegisterPage() {
       <h1 style={styles.title}>Register</h1>
       <input
         type="text"
-        placeholder="Name"
+        placeholder="Full Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
         style={styles.input}
@@ -50,6 +50,9 @@ function RegisterPage() {
         onChange={(e) => setContactNumber(e.target.value)}
         style={styles.input}
       />
+      <p style={styles.warn} onClick={() => navigate('/')}>
+       Please remember your username. You cannot change it after your registration.
+      </p>
       <button onClick={handleRegister} style={styles.button}>Register</button>
       <p style={styles.link} onClick={() => navigate('/')}>
         Already have an account? <span style={styles.linkText}>Login</span>
@@ -85,6 +88,7 @@ const styles = {
     cursor: 'pointer',
   },
   link: { marginTop: '10px', cursor: 'pointer' },
+  warn: { marginTop: '10px', cursor: 'pointer', color:"red" },
   linkText: { color: '#4F63AC' },
 };
 

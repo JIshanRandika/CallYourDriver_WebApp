@@ -56,6 +56,12 @@ function LoginPage() {
       <p style={styles.link} onClick={() => navigate('/forgot-password')}>
         Forgot Password?
       </p>
+      {/* <button
+        onClick={() => window.open('https://download-callyourdriver.web.app/', '_blank')}
+        style={styles.downloadButton}
+      >
+        Download App
+      </button> */}
     </div>
   );
 }
@@ -92,6 +98,15 @@ const styles = {
     color: 'red',
     marginBottom: '15px',
     fontSize: '0.9rem',
+  },
+  downloadButton: {
+    marginTop: '20px',
+    backgroundColor: 'green',
+    color: '#FFF',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
   },
 };
 
