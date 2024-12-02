@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { suggestDriver, deductPoints } from '../services/api';
 import Header from '../components/Header';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 function DriverDetailsPage() {
-  const { state } = useLocation(); // Access the passed state from navigation
+  const { state } = useLocation();
   const navigate = useNavigate();
   const { parkName, category } = state || {};
-  
+
   const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchDriver = async () => {
@@ -18,10 +20,10 @@ function DriverDetailsPage() {
         if (response.data && response.data.driver) {
           setDriver(response.data.driver);
         } else {
-          setDriver(null); // If no driver is available
+          setDriver(null);
         }
       } catch (error) {
-        console.error("Error fetching driver:", error);
+        console.error('Error fetching driver:', error);
         setDriver(null);
       } finally {
         setLoading(false);
@@ -37,20 +39,21 @@ function DriverDetailsPage() {
   }, [parkName, category, navigate]);
 
   const handleCallDriver = async () => {
-    const confirmation = window.confirm(
-      '⚠️ Warning ⚠️\n\nAre you sure you want to call this driver? Points will be deducted from their balance for each call!'
-    );
-
-    if (confirmation) {
-      try {
-        await deductPoints(driver.contactNumber);
-        console.log('Points deducted from driver');
-        window.open(`tel:${driver.contactNumber}`, '_self');
-      } catch (error) {
-        console.error('Error deducting points from driver:', error);
-        alert('Failed to deduct points from the driver.');
-      }
+    try {
+      await deductPoints(driver.contactNumber);
+      console.log('Points deducted from driver');
+      window.open(`tel:${driver.contactNumber}`, '_self');
+    } catch (error) {
+      console.error('Error deducting points from driver:', error);
+      alert('Failed to deduct points from the driver.');
     }
+  };
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+  const confirmCallDriver = () => {
+    closeModal();
+    handleCallDriver();
   };
 
   if (loading) {
@@ -71,26 +74,27 @@ function DriverDetailsPage() {
 
   return (
     <div>
-        <Header />
-        <div style={styles.container}>
-      <h1 style={styles.title}>Driver Details</h1>
-      <div style={styles.driverCard}>
-        <p style={styles.detailText}>
-          Name: <span style={styles.detailValue}>{driver.name}</span>
-        </p>
-        {/* <p style={styles.detailText}>
-          Contact: <span style={styles.detailValue}>{driver.contactNumber}</span>
-        </p> */}
-        <p style={styles.detailText}>
-          Vehicle: <span style={styles.detailValue}>{driver.vehicleNumber}</span>
-        </p>
+      <Header />
+      <div style={styles.container}>
+        <h1 style={styles.title}>Driver Details</h1>
+        <div style={styles.driverCard}>
+          <p style={styles.detailText}>
+            Name: <span style={styles.detailValue}>{driver.name}</span>
+          </p>
+          <p style={styles.detailText}>
+            Vehicle: <span style={styles.detailValue}>{driver.vehicleNumber}</span>
+          </p>
+        </div>
+        <button style={styles.callButton} onClick={openModal}>
+          Call Your Driver
+        </button>
       </div>
-      <button style={styles.callButton} onClick={handleCallDriver}>
-        Call Your Driver
-      </button>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onConfirm={confirmCallDriver}
+      />
     </div>
-    </div>
-    
   );
 }
 
