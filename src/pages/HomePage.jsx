@@ -32,8 +32,12 @@ function HomePage() {
         setParks(parkData.data.map((park) => park.name));
         setCategories(categoryData.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setPopupMessage('Failed to load parks and categories. Please try again.');
+        if(localStorage.getItem('token')){
+          console.error('Error fetching data:', error);
+          setPopupMessage('Failed to load parks and categories. Please try again.');
+        } else {
+          navigate('/');
+        }
       } finally {
         setLoading(false);
       }
