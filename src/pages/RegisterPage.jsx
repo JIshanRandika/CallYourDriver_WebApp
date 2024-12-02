@@ -7,6 +7,7 @@ function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async () => {
@@ -36,13 +37,21 @@ function RegisterPage() {
         onChange={(e) => setUsername(e.target.value)}
         style={styles.input}
       />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={styles.input}
-      />
+      <div style={styles.passwordContainer}>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.inputPassword}
+        />
+        <span
+          onClick={() => setShowPassword(!showPassword)}
+          style={styles.eyeIcon}
+        >
+          {showPassword ? '👁️' : '🙈'}
+        </span>
+      </div>
       <input
         type="text"
         placeholder="Contact Number"
@@ -51,9 +60,12 @@ function RegisterPage() {
         style={styles.input}
       />
       <p style={styles.warn}>
-       Please remember your username. <br/> You cannot change it after your registration.
+        Please remember your username. <br /> You cannot change it after your
+        registration.
       </p>
-      <button onClick={handleRegister} style={styles.button}>Register</button>
+      <button onClick={handleRegister} style={styles.button}>
+        Register
+      </button>
       <p style={styles.link} onClick={() => navigate('/')}>
         Already have an account? <span style={styles.linkText}>Login</span>
       </p>
@@ -78,6 +90,27 @@ const styles = {
     width: '300px',
     borderRadius: '5px',
     border: '1px solid #3A3A4B',
+    boxSizing: 'border-box', // Ensures padding doesn't shrink the input width
+  },
+  passwordContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    width: '300px', // Matches the width of other inputs
+    marginBottom: '15px',
+  },
+  inputPassword: {
+    padding: '10px',
+    width: '100%', // Fills the container's width
+    borderRadius: '5px',
+    border: '1px solid #3A3A4B',
+    boxSizing: 'border-box', // Ensures consistent width with padding
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: '10px',
+    cursor: 'pointer',
+    color: '#3A3A4B',
   },
   button: {
     backgroundColor: '#4F63AC',
@@ -88,8 +121,13 @@ const styles = {
     cursor: 'pointer',
   },
   link: { marginTop: '10px', cursor: 'pointer' },
-  warn: { marginTop: '10px', cursor: 'pointer', color:"red", alignItems:"center", textAlign: "center"  },
+  warn: {
+    marginTop: '10px',
+    color: 'red',
+    textAlign: 'center',
+  },
   linkText: { color: '#4F63AC' },
 };
+
 
 export default RegisterPage;
