@@ -54,7 +54,7 @@ function LoginPage() {
           onClick={() => setShowPassword(!showPassword)}
           style={styles.eyeIcon}
         >
-          {showPassword ? '👁️' : '🙈'}
+          {showPassword ? '😯' : '😵'}
         </span>
       </div>
       <button onClick={handleLogin} style={styles.button} disabled={loading}>
@@ -97,7 +97,6 @@ const styles = {
     flex: 1,
     border: 'none',
     outline: 'none',
-    fontSize: '16px',
     backgroundColor: 'transparent',
   },
   eyeIcon: {

@@ -49,7 +49,7 @@ function RegisterPage() {
           onClick={() => setShowPassword(!showPassword)}
           style={styles.eyeIcon}
         >
-          {showPassword ? '👁️' : '🙈'}
+          {showPassword ? '😯' : '😵'}
         </span>
       </div>
       <input
