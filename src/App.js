@@ -24,18 +24,26 @@
 
 // export default App;
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
 import DriverDetailsPage from './pages/DriverDetailsPage';
 
+// Function to check if the user is logged in
+const isAuthenticated = () => {
+  return !!localStorage.getItem('token'); // Check if token exists
+};
+
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+      <Route
+          path="/"
+          element={isAuthenticated() ? <Navigate to="/home" replace /> : <LoginPage />}
+        />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/home" element={<HomePage />} />
