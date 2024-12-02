@@ -43,12 +43,13 @@ function LoginPage() {
       />
       <div style={styles.input}>
         <input
-          type={showPassword ? 'text' : 'password'}
+          type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.passwordInput}
         />
+
         <span
           onClick={() => setShowPassword(!showPassword)}
           style={styles.eyeIcon}
@@ -63,7 +64,7 @@ function LoginPage() {
         Don’t have an account? <span style={styles.linkText}>Register</span>
       </p>
       <p style={styles.link} onClick={() => navigate('/forgot-password')}>
-        Forgot Password?
+        <span style={styles.linkText}>Forgot Password?</span>
       </p>
     </div>
   );
@@ -100,9 +101,11 @@ const styles = {
     backgroundColor: 'transparent',
   },
   eyeIcon: {
+    position: 'absolute',
+    right: '11px',
     cursor: 'pointer',
-    marginLeft: '10px',
     color: '#3A3A4B',
+    fontSize: '22px',
   },
   button: {
     backgroundColor: '#4F63AC',

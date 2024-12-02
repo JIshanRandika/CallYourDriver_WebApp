@@ -111,6 +111,7 @@ const styles = {
     right: '10px',
     cursor: 'pointer',
     color: '#3A3A4B',
+    fontSize: '22px',
   },
   button: {
     backgroundColor: '#4F63AC',
