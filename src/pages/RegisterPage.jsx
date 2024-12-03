@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/api';
+import { login } from '../services/api';
 
 function RegisterPage() {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const updateHeight = () => setScreenHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
 
   const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      alert('Passwords do not match. Please try again.');
+      return;
+    }
+
     try {
       await register(name, username, password, contactNumber);
+      await login(username, password);
       alert('Registration successful!');
-      navigate('/');
+      navigate('/Home');
     } catch (error) {
       alert('Registration failed. Please try again.');
     }
   };
 
   return (
-    <div style={styles.container}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: `${screenHeight}px`,
+        backgroundColor: '#1E1E2C',
+        color: '#FFF',
+      }}
+    >
       <h1 style={styles.title}>Register</h1>
       <input
         type="text"
@@ -52,8 +77,23 @@ function RegisterPage() {
           {showPassword ? '😯' : '😵'}
         </span>
       </div>
+      <div style={styles.passwordContainer}>
+        <input
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          style={styles.inputPassword}
+        />
+        <span
+          onClick={() => setShowPassword(!showPassword)}
+          style={styles.eyeIcon}
+        >
+          {showPassword ? '😯' : '😵'}
+        </span>
+      </div>
       <input
-        type="text"
+        type="number"
         placeholder="Contact Number"
         value={contactNumber}
         onChange={(e) => setContactNumber(e.target.value)}
@@ -90,21 +130,21 @@ const styles = {
     width: '300px',
     borderRadius: '5px',
     border: '1px solid #3A3A4B',
-    boxSizing: 'border-box', // Ensures padding doesn't shrink the input width
+    boxSizing: 'border-box',
   },
   passwordContainer: {
     display: 'flex',
     alignItems: 'center',
     position: 'relative',
-    width: '300px', // Matches the width of other inputs
+    width: '300px',
     marginBottom: '15px',
   },
   inputPassword: {
     padding: '10px',
-    width: '100%', // Fills the container's width
+    width: '100%',
     borderRadius: '5px',
     border: '1px solid #3A3A4B',
-    boxSizing: 'border-box', // Ensures consistent width with padding
+    boxSizing: 'border-box',
   },
   eyeIcon: {
     position: 'absolute',
@@ -129,6 +169,5 @@ const styles = {
   },
   linkText: { color: '#4F63AC' },
 };
-
 
 export default RegisterPage;
