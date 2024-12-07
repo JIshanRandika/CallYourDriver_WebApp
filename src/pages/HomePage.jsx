@@ -102,7 +102,9 @@ function HomePage() {
             </option>
           ))}
         </select>
-
+        <p style={styles.warn}>
+        Hire fee might be change according to the distence from pickup location to park
+      </p>
         <h2 style={styles.title}>Select Category</h2>
       </div>
       
@@ -199,6 +201,11 @@ const styles = {
   loadingText: {
     fontSize: '1.5rem',
     color: '#B0B3B8',
+  },
+  warn: {
+    marginTop: '10px',
+    color: 'yellow',
+    textAlign: 'center',
   },
 };
 
