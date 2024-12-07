@@ -1,30 +1,5 @@
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -34,6 +9,8 @@ import DriverDetailsPage from './pages/DriverDetailsPage';
 function App() {
   return (
     <Router>
+      {/* Storage event listener inside a child component */}
+      <StorageListener />
       <Routes>
       <Route
           path="/"
@@ -42,10 +19,34 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/driver-details" element={<DriverDetailsPage />} />
+        <Route
+          path="/driver-details"
+          element={<DriverDetailsPage />}
+        />
       </Routes>
     </Router>
   );
+}
+
+function StorageListener() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleStorageEvent = (event) => {
+      if (event.key === 'logout-event') {
+        console.log('Logout event detected in another tab.');
+        navigate('/'); // Redirect to login page
+      }
+    };
+
+    window.addEventListener('storage', handleStorageEvent);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageEvent);
+    };
+  }, [navigate]);
+
+  return null; // This component is only for handling events
 }
 
 export default App;
