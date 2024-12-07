@@ -1,9 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaQuestion } from 'react-icons/fa';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // List of pages where the Back button should be visible
+  const pagesWithBackButton = ['/driver-details'];
 
   const handleBack = () => {
     navigate(-1); // Navigates to the previous screen
@@ -12,33 +15,33 @@ function Header() {
   const handleLogout = () => {
     navigate('/');
     localStorage.removeItem('token');
+    window.location.reload();
   };
 
   const openWhatsApp = () => {
     const phoneNumber = '+94715757700';
-    const message = 'Hello, I need support with the app';
+    const message = 'Hello, I am a CallYourDriver user';
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
 
-  const downloadApp = () => {
-    const appUrl = 'https://download-callyourdriver.web.app/'; // Replace with your app download link
-    window.open(appUrl, '_blank');
-  };
-
   return (
     <header style={styles.header}>
-      <button onClick={handleBack} style={styles.backButton}>
-        Back
-      </button>
+      {pagesWithBackButton.includes(location.pathname) ? (
+        <button onClick={handleBack} style={styles.backButton}>
+          Back
+        </button>
+      ) : (
+        // Placeholder to maintain layout when the Back button is hidden
+        <div style={styles.backButtonPlaceholder}></div>
+      )}
       <div style={styles.actionButtons}>
-      <button onClick={openWhatsApp} style={styles.supportButton}>
-          <FaQuestion size={24} color="#25D366" />
+        <button onClick={openWhatsApp} style={styles.feedbackButton}>
+          Feedback
         </button>
         <button onClick={handleLogout} style={styles.logoutButton}>
           Logout
         </button>
-        
       </div>
     </header>
   );
@@ -61,14 +64,20 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
   },
+  backButtonPlaceholder: {
+    width: '75px', // Same width as the Back button to maintain alignment
+  },
   actionButtons: {
     display: 'flex',
     alignItems: 'center',
-    gap: '10px', // Adds space between buttons
+    gap: '10px',
   },
-  supportButton: {
-    background: 'none',
+  feedbackButton: {
+    backgroundColor: 'green',
+    color: '#FFF',
+    padding: '10px 15px',
     border: 'none',
+    borderRadius: '5px',
     cursor: 'pointer',
   },
   logoutButton: {
