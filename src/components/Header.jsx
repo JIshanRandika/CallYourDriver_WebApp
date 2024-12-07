@@ -5,9 +5,13 @@ import { FaQuestion } from 'react-icons/fa';
 function Header() {
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate(-1); // Navigates to the previous screen
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
     navigate('/');
+    localStorage.removeItem('token');
   };
 
   const openWhatsApp = () => {
@@ -24,15 +28,18 @@ function Header() {
 
   return (
     <header style={styles.header}>
+      <button onClick={handleBack} style={styles.backButton}>
+        Back
+      </button>
+      <div style={styles.actionButtons}>
       <button onClick={openWhatsApp} style={styles.supportButton}>
-        <FaQuestion size={24} color="#25D366" />
-      </button>
-      {/* <button onClick={downloadApp} style={styles.downloadButton}>
-        Download App
-      </button> */}
-      <button onClick={handleLogout} style={styles.logoutButton}>
-        Logout
-      </button>
+          <FaQuestion size={24} color="#25D366" />
+        </button>
+        <button onClick={handleLogout} style={styles.logoutButton}>
+          Logout
+        </button>
+        
+      </div>
     </header>
   );
 }
@@ -46,19 +53,23 @@ const styles = {
     backgroundColor: '#1E1E2C',
     color: '#FFF',
   },
+  backButton: {
+    backgroundColor: 'gray',
+    color: '#FFF',
+    padding: '10px 15px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+  actionButtons: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px', // Adds space between buttons
+  },
   supportButton: {
     background: 'none',
     border: 'none',
     cursor: 'pointer',
-  },
-  downloadButton: {
-    backgroundColor: 'green',
-    color: '#FFF',
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    margin: '0 auto',
   },
   logoutButton: {
     backgroundColor: '#4F63AC',

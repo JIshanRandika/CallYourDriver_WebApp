@@ -24,6 +24,13 @@ function HomePage() {
   const [popupMessage, setPopupMessage] = useState(null); // For managing the popup message
   const navigate = useNavigate();
 
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  useEffect(() => {
+    const updateHeight = () => setScreenHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,10 +69,27 @@ function HomePage() {
   }
 
   return (
-    <div style={styles.pageContainer}>
-      <Header />
-      <div style={styles.container}>
-        <h1 style={styles.title}>Select Park</h1>
+    <>
+      {/* <Header style={{
+      position:"relative"
+    }}/> */}
+      <div style={{
+      // display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: `${screenHeight}px`,
+      backgroundColor: '#1E1E2C',
+      color: '#FFF',
+    }}>
+      <Header/>
+      <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      }}>
+          <h1 style={styles.title}>Select Park</h1>
         <select
           value={parkName}
           onChange={(e) => setParkName(e.target.value)}
@@ -80,6 +104,8 @@ function HomePage() {
         </select>
 
         <h2 style={styles.title}>Select Category</h2>
+      </div>
+      
         <div style={styles.categoriesContainer}>
           {categories.map((category) => (
             <button
@@ -103,7 +129,7 @@ function HomePage() {
           onClose={() => setPopupMessage(null)} // Close the popup
         />
       )}
-    </div>
+    </>
   );
 }
 
@@ -147,6 +173,7 @@ const styles = {
     gap: '20px',
   },
   categoryButton: {
+    width: '170px',
     padding: '15px 25px',
     borderRadius: '5px',
     border: 'none',

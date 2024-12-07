@@ -8,8 +8,8 @@ function ConfirmationModal({ isOpen, onClose, onConfirm }) {
       <div style={styles.modal}>
         {/* <h2 style={styles.modalTitle}>⚠️ Warning ⚠️</h2> */}
         <p style={styles.modalMessage}>
-          Are you sure you want to call this driver? Points will be deducted
-          from their balance for each call!
+          Are you sure you want to call this driver?
+          {/* Points will be deducted from their balance for each call! */}
         </p>
         <div style={styles.modalActions}>
           <button style={styles.cancelButton} onClick={onClose}>
@@ -52,6 +52,7 @@ const styles = {
   modalMessage: {
     fontSize: '1rem',
     marginBottom: '20px',
+    color:"black"
   },
   modalActions: {
     display: 'flex',

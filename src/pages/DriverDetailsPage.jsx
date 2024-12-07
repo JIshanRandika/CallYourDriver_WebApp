@@ -13,6 +13,13 @@ function DriverDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  useEffect(() => {
+    const updateHeight = () => setScreenHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   useEffect(() => {
     const fetchDriver = async () => {
       try {
@@ -73,9 +80,25 @@ function DriverDetailsPage() {
   }
 
   return (
-    <div style={styles.pageContainer}>
+    <div style={{
+      // display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: `${screenHeight}px`,
+      backgroundColor: '#1E1E2C',
+      color: '#FFF',
+    }}>
       <Header />
-      <div style={styles.container}>
+      <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop:`${screenHeight*0.25}px`,
+      justifyContent: 'center',
+      backgroundColor: '#1E1E2C',
+      color: '#FFF',
+    }}>
         <h1 style={styles.title}>Driver Details</h1>
         <div style={styles.driverCard}>
           <p style={styles.detailText}>
@@ -125,8 +148,8 @@ const styles = {
     backgroundColor: '#2C2C3A',
     padding: '20px',
     borderRadius: '10px',
-    width: '100%',
-    maxWidth: '400px',
+    width: '75%',
+    maxWidth: '300px',
     marginBottom: '30px',
     boxShadow: '0 2px 5px rgba(0, 0, 0, 0.5)',
   },

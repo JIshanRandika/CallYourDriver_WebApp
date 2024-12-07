@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { resetPassword } from '../services/api';
 
@@ -7,6 +7,12 @@ function ForgotPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  useEffect(() => {
+    const updateHeight = () => setScreenHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
 
   const handlePasswordReset = async () => {
     if (newPassword !== confirmPassword) {
@@ -24,7 +30,15 @@ function ForgotPasswordPage() {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: `${screenHeight}px`,
+      backgroundColor: '#1E1E2C',
+      color: '#FFF',
+    }}>
       <h1 style={styles.title}>Forgot Password</h1>
       <input
         type="text"

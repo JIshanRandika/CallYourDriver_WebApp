@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/api';
 
@@ -9,6 +9,12 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
+  useEffect(() => {
+    const updateHeight = () => setScreenHeight(window.innerHeight);
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -31,7 +37,15 @@ function LoginPage() {
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: `${screenHeight}px`,
+      backgroundColor: '#1E1E2C',
+      color: '#FFF',
+    }}>
       <h1 style={styles.title}>Login</h1>
       {error && <p style={styles.error}>{error}</p>}
       <input
@@ -43,7 +57,7 @@ function LoginPage() {
       />
       <div style={styles.input}>
         <input
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +90,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    // height: `${screenHeight}px`,
     backgroundColor: '#1E1E2C',
     color: '#FFF',
   },
