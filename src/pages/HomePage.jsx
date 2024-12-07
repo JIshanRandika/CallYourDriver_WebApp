@@ -105,6 +105,10 @@ function HomePage() {
         <p style={styles.warn}>
         Hire fee might be change according to the distence from pickup location to park
       </p>
+      <p style={styles.availablility}>
+      Threewheels 🛺 available time: 6.00am - 9.00pm <br></br>
+      Bikes 🛵 available time: Anytime with their availability (Every bike riders are university students)
+      </p>
         <h2 style={styles.title}>Select Category</h2>
       </div>
       
@@ -204,7 +208,12 @@ const styles = {
   },
   warn: {
     marginTop: '10px',
-    color: 'yellow',
+    color: '#eb346e',
+    textAlign: 'center',
+  },
+  availablility: {
+    marginTop: '10px',
+    color: 'green',
     textAlign: 'center',
   },
 };
