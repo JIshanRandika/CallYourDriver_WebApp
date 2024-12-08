@@ -7,6 +7,7 @@ function RegisterPage() {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +30,7 @@ function RegisterPage() {
       setShowPopup(true);
       return;
     }
-
+    setLoading(true);
     try {
       const response = await register(name, username, password, contactNumber);
       await login(username, password);
@@ -43,6 +44,8 @@ function RegisterPage() {
       setPopupMessage(errorMessage);
       setPopupType('error');
       setShowPopup(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -115,7 +118,7 @@ function RegisterPage() {
         registration.
       </p>
       <button onClick={handleRegister} style={styles.button}>
-        Register
+        {loading ? 'Registering...' : 'Register'}
       </button>
       <p style={styles.link} onClick={() => navigate('/')}>
         Already have an account? <span style={styles.linkText}>Login</span>
