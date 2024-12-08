@@ -19,7 +19,7 @@ function Header() {
   };
 
   const openWhatsApp = () => {
-    const phoneNumber = '+94715757700';
+    const phoneNumber = '+94769994311';
     const message = 'Hello, I am a CallYourDriver user';
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
