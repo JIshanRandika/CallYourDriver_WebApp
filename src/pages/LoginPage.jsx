@@ -29,6 +29,7 @@ function LoginPage() {
     try {
       await login(username, password);
       navigate('/home');
+      localStorage.setItem('home-event', Date.now());
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {

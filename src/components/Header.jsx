@@ -14,6 +14,7 @@ function Header() {
 
   const handleLogout = () => {
     navigate('/');
+    localStorage.setItem('logout-event', Date.now());
     localStorage.removeItem('token');
     window.location.reload();
   };

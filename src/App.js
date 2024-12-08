@@ -36,6 +36,12 @@ function StorageListener() {
       if (event.key === 'logout-event') {
         console.log('Logout event detected in another tab.');
         navigate('/'); // Redirect to login page
+        window.location.reload();
+      }
+      if (event.key === 'home-event') {
+        console.log('Home event detected in another tab.');
+        navigate('/home'); // Redirect to login page
+        window.location.reload();
       }
     };
 
