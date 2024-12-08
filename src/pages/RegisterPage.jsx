@@ -10,6 +10,9 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState(''); // 'success' or 'error'
   const navigate = useNavigate();
   const [screenHeight, setScreenHeight] = useState(window.innerHeight);
 
@@ -21,17 +24,25 @@ function RegisterPage() {
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
-      alert('Passwords do not match. Please try again.');
+      setPopupMessage('Passwords do not match. Please try again.');
+      setPopupType('error');
+      setShowPopup(true);
       return;
     }
 
     try {
-      await register(name, username, password, contactNumber);
+      const response = await register(name, username, password, contactNumber);
       await login(username, password);
-      alert('Registration successful!');
+      setPopupMessage(response.data.message);
+      setPopupType('success');
+      setShowPopup(true);
       navigate('/Home');
     } catch (error) {
-      alert('Registration failed. Please try again.');
+      // Handle both server errors and unexpected issues
+      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      setPopupMessage(errorMessage);
+      setPopupType('error');
+      setShowPopup(true);
     }
   };
 
@@ -109,9 +120,57 @@ function RegisterPage() {
       <p style={styles.link} onClick={() => navigate('/')}>
         Already have an account? <span style={styles.linkText}>Login</span>
       </p>
+       {/* Popup Modal */}
+       {showPopup && (
+        <div style={popupStyles.overlay}>
+          <div style={{ ...popupStyles.popup, backgroundColor: popupType === 'success' ? '#ffffff' : '#ff0051' }}>
+            <p style={popupStyles.message}>{popupMessage}</p>
+            <button onClick={() => setShowPopup(false)} style={popupStyles.button}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
+  
 }
+
+const popupStyles = {
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  popup: {
+    backgroundColor: '#FFF',
+    padding: '20px',
+    borderRadius: '5px',
+    textAlign: 'center',
+    maxWidth: '300px',
+    width: '80%',
+    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.25)',
+  },
+  message: {
+    marginBottom: '20px',
+    color: '#FFF',
+  },
+  button: {
+    backgroundColor: '#4F63AC',
+    color: '#FFF',
+    border: 'none',
+    borderRadius: '5px',
+    padding: '10px 20px',
+    cursor: 'pointer',
+  },
+};
 
 const styles = {
   container: {
