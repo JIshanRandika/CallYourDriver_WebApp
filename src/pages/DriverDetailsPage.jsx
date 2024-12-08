@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { suggestDriver, deductPoints } from '../services/api';
-import Header from '../components/Header';
-import ConfirmationModal from '../components/ConfirmationModal';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { suggestDriver, deductPoints } from "../services/api";
+import Header from "../components/Header";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 function DriverDetailsPage() {
   const { state } = useLocation();
@@ -16,8 +16,8 @@ function DriverDetailsPage() {
   const [screenHeight, setScreenHeight] = useState(window.innerHeight);
   useEffect(() => {
     const updateHeight = () => setScreenHeight(window.innerHeight);
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function DriverDetailsPage() {
           setDriver(null);
         }
       } catch (error) {
-        console.error('Error fetching driver:', error);
+        console.error("Error fetching driver:", error);
         setDriver(null);
       } finally {
         setLoading(false);
@@ -40,19 +40,19 @@ function DriverDetailsPage() {
     if (parkName && category) {
       fetchDriver();
     } else {
-      alert('Invalid park or category. Redirecting...');
-      navigate('/');
+      alert("Invalid park or category. Redirecting...");
+      navigate("/");
     }
   }, [parkName, category, navigate]);
 
   const handleCallDriver = async () => {
     try {
       await deductPoints(driver.contactNumber);
-      console.log('Points deducted from driver');
-      window.open(`tel:${driver.contactNumber}`, '_self');
+      console.log("Points deducted from driver");
+      window.open(`tel:${driver.contactNumber}`, "_self");
     } catch (error) {
-      console.error('Error deducting points from driver:', error);
-      alert('Failed to deduct points from the driver.');
+      console.error("Error deducting points from driver:", error);
+      alert("Failed to deduct points from the driver.");
     }
   };
 
@@ -73,39 +73,56 @@ function DriverDetailsPage() {
 
   if (!driver) {
     return (
-      <div style={styles.loadingContainer}>
-        <p style={styles.loadingText}>Drivers currently not available</p>
+      <div>
+        <Header />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: `${screenHeight * 0.75}px`,
+            backgroundColor: "#1E1E2C",
+            color: "#FFFFFF",
+          }}
+        >
+          <p style={styles.loadingText}>Drivers currently not available</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{
-      // display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: `${screenHeight}px`,
-      backgroundColor: '#1E1E2C',
-      color: '#FFF',
-    }}>
+    <div
+      style={{
+        // display: 'flex',
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: `${screenHeight}px`,
+        backgroundColor: "#1E1E2C",
+        color: "#FFF",
+      }}
+    >
       <Header />
-      <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      marginTop:`${screenHeight*0.25}px`,
-      justifyContent: 'center',
-      backgroundColor: '#1E1E2C',
-      color: '#FFF',
-    }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: `${screenHeight * 0.25}px`,
+          justifyContent: "center",
+          backgroundColor: "#1E1E2C",
+          color: "#FFF",
+        }}
+      >
         <h1 style={styles.title}>Driver Details</h1>
         <div style={styles.driverCard}>
           <p style={styles.detailText}>
             Name: <span style={styles.detailValue}>{driver.name}</span>
           </p>
           <p style={styles.detailText}>
-            Vehicle: <span style={styles.detailValue}>{driver.vehicleNumber}</span>
+            Vehicle:{" "}
+            <span style={styles.detailValue}>{driver.vehicleNumber}</span>
           </p>
         </div>
         <button style={styles.callButton} onClick={openModal}>
@@ -123,70 +140,70 @@ function DriverDetailsPage() {
 
 const styles = {
   pageContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    overflow: 'hidden',
-    backgroundColor: '#1E1E2C',
-    color: '#FFFFFF',
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh",
+    overflow: "hidden",
+    backgroundColor: "#1E1E2C",
+    color: "#FFFFFF",
   },
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#1E1E2C',
-    color: '#FFFFFF',
-    padding: '20px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "100vh",
+    backgroundColor: "#1E1E2C",
+    color: "#FFFFFF",
+    padding: "20px",
   },
   title: {
-    fontSize: '2rem',
-    marginBottom: '20px',
+    fontSize: "2rem",
+    marginBottom: "20px",
   },
   driverCard: {
-    backgroundColor: '#2C2C3A',
-    padding: '20px',
-    borderRadius: '10px',
-    width: '75%',
-    maxWidth: '300px',
-    marginBottom: '30px',
-    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.5)',
+    backgroundColor: "#2C2C3A",
+    padding: "20px",
+    borderRadius: "10px",
+    width: "75%",
+    maxWidth: "300px",
+    marginBottom: "30px",
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
   },
   detailText: {
-    fontSize: '1rem',
-    margin: '10px 0',
-    color: '#B0B3B8',
+    fontSize: "1rem",
+    margin: "10px 0",
+    color: "#B0B3B8",
   },
   detailValue: {
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
   callButton: {
-    backgroundColor: '#4F63AC',
-    color: '#FFFFFF',
-    fontSize: '1rem',
-    fontWeight: 'bold',
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
+    backgroundColor: "#4F63AC",
+    color: "#FFFFFF",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "background-color 0.3s",
   },
   callButtonHover: {
-    backgroundColor: '#3A5191',
+    backgroundColor: "#3A5191",
   },
   loadingContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#1E1E2C',
-    color: '#FFFFFF',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    backgroundColor: "#1E1E2C",
+    color: "#FFFFFF",
   },
   loadingText: {
-    fontSize: '1.5rem',
-    color: '#B0B3B8',
+    fontSize: "1.5rem",
+    color: "#B0B3B8",
   },
 };
 
