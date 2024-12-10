@@ -41,7 +41,11 @@ function HomePage() {
       } catch (error) {
         if(localStorage.getItem('token')){
           console.error('Error fetching data:', error);
-          setPopupMessage('Failed to load parks and categories. Please try again.');
+          setPopupMessage('Failed to load parks and categories. Please login again.');
+          navigate('/');
+          localStorage.setItem('logout-event', Date.now());
+          localStorage.removeItem('token');
+          window.location.reload();
         } else {
           navigate('/');
         }
@@ -103,7 +107,7 @@ function HomePage() {
           ))}
         </select>
         <p style={styles.warn}>
-        Hire fee might be change according to the distence from pickup location to park
+        The hire fee might be changed according to the distance from the pickup location to the park
       </p>
       <p style={styles.availablility}>
       Threewheels 🛺 available time: 6.00am - 9.00pm <br></br>
