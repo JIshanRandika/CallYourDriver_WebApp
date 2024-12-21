@@ -49,7 +49,9 @@ function DriverDetailsPage() {
     try {
       await deductPoints(driver.contactNumber);
       console.log("Points deducted from driver");
-      window.open(`tel:${driver.contactNumber}`, "_self");
+      // window.location.href = `tel:${driver.contactNumber}`;
+      document.location.href = `tel:${driver.contactNumber}`;
+      // window.open(`tel:${driver.contactNumber}`, "_self");
     } catch (error) {
       console.error("Error deducting points from driver:", error);
       alert("Failed to deduct points from the driver.");
