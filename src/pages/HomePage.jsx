@@ -111,7 +111,9 @@ function HomePage() {
       </p>
       <p style={styles.availablility}>
       Threewheels 🛺 available time: 6.00am - 9.00pm <br></br>
-      Bikes 🛵 available time: Anytime with their availability (Every bike riders are university students)
+      Bikes 🛵 : Anytime with their availability (Every bike riders are university students) (First 1Km - 70LKR, Additional per kilometer - 40 LKR) <br></br>
+      Food Delivery 🍔 : Anytime with their availability (Every bike riders are university students) (Any shop between Pabahinna and Y Junction  - 100 LKR, Additional per kilometer - 40 LKR)
+
       </p>
         <h2 style={styles.title}>Select Category</h2>
       </div>
