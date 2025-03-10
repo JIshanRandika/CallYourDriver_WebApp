@@ -110,8 +110,9 @@ function HomePage() {
         The hire fee might be changed according to the distance from the pickup location to the park
       </p>
       <p style={styles.availablility}>
+        Night Bakery Service 🍔 : 10.00pm - 3.00am (180 LKR) <br></br>
       Threewheels 🛺 available time: 6.00am - 9.00pm <br></br>
-      Bikes 🛵 : Anytime with their availability (Every bike riders are university students) (First 1Km - 70LKR, Additional per kilometer - 40 LKR) <br></br>
+      Bikes 🛵 : Anytime with their availability (Every bike riders are university students) (First 1Km - 70 LKR, Additional per kilometer - 40 LKR) <br></br>
       Food Delivery 🍔 : Anytime with their availability (Every bike riders are university students) (Any shop between Pabahinna and Y Junction  - 100 LKR, Additional per kilometer - 40 LKR)
 
       </p>
@@ -119,7 +120,23 @@ function HomePage() {
       </div>
       
         <div style={styles.categoriesContainer}>
-          {categories.map((category) => (
+          {categories.filter(category => {
+      // Special handling for food delivery category
+      if (category.name === "Bakery 🍔") {
+        // Get current time
+        const currentHour = new Date().getHours();
+        // Show only between 10 PM (22) and 2 AM (2)
+        return currentHour >= 22 || currentHour < 2;
+      }
+      if (category.name === "Threewheel 🛺" || category.name === "Bike 🛵" || category.name === "Food Delivery 🍔") {
+        // Get current time
+        const currentHour = new Date().getHours();
+        // Show only between 2 AM to 10 PM
+        return currentHour >= 2 && currentHour < 22;
+      }
+      // Always show other categories
+      return true;
+    }).map((category) => (
             <button
               key={category.name}
               style={{
